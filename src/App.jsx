@@ -2,6 +2,13 @@ import Card from '/src/components/Card';
 import Header from '/src/components/Header';
 import Drawer from '/src/components/Drawer'
 
+const arr = [
+  { title: "Men's Nike Blazer Mid Suede Sneakers", price: 124.99, imageUrl: '/img/sneakers/1.jpg'},
+  { title: "Men's Nike Air Max 270 Sneakers", price: 144.99, imageUrl: '/img/sneakers/2.jpg'},
+  { title: "Men's Nike Blazer Mid Suede Sneakers", price: 84.99, imageUrl: '/img/sneakers/3.jpg'},
+  { title: "Men's Puma X Aka Boku Future Rider Sneakers", price: 89.99, imageUrl: '/img/sneakers/4.jpg'},
+]
+
 function App() {
   return (
     <div className="wrapper clear">
@@ -17,46 +24,9 @@ function App() {
         </div>
 
         <div className="d-flex">
-          <Card />
-          <div className="card">
-            <img width={133} height={112} src="/img/sneakers/2.jpg" alt="" />
-            <h5>Men's Nike Blazer Mid Suede Sneakers</h5>
-            <div className="d-flex justify-between align-center">
-              <div className="d-flex flex-column">
-                <span>price:</span>
-                <b>124.99 USD</b>
-              </div>
-              <button className="button">
-                <img width={11} height={11} src="/img/plus.svg" alt="plus" />
-              </button>
-            </div>
-          </div>
-          <div className="card">
-            <img width={133} height={112} src="/img/sneakers/3.jpg" alt="" />
-            <h5>Men's Nike Blazer Mid Suede Sneakers</h5>
-            <div className="d-flex justify-between align-center">
-              <div className="d-flex flex-column">
-                <span>price:</span>
-                <b>124.99 USD</b>
-              </div>
-              <button className="button">
-                <img width={11} height={11} src="/img/plus.svg" alt="plus" />
-              </button>
-            </div>
-          </div>
-          <div className="card">
-            <img width={133} height={112} src="/img/sneakers/4.jpg" alt="" />
-            <h5>Men's Nike Blazer Mid Suede Sneakers</h5>
-            <div className="d-flex justify-between align-center">
-              <div className="d-flex flex-column">
-                <span>price:</span>
-                <b>124.99 USD</b>
-              </div>
-              <button className="button">
-                <img width={11} height={11} src="/img/plus.svg" alt="plus" />
-              </button>
-            </div>
-          </div>
+          {arr.map((obj) => (
+            <Card imageUrl={obj.imageUrl} title={obj.title} price={obj.price}/>
+          ))}
         </div>
       </div>
     </div>
