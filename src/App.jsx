@@ -5,6 +5,7 @@ import Drawer from '/src/components/Drawer'
 
 function App() {
   const [items, setItems] = React.useState([]);
+  const [cartItems, setCartItems] = React.useState([]);
   const [cartOpened, setCartOpened] = React.useState(false);
 
 
@@ -17,11 +18,15 @@ function App() {
         setItems(json);
       });
   }, []);
+
+  const onAddToCart = (obj) => {
+    setCartItems(prev => [...prev, obj]);
+  };
   
 
   return (
     <div className="wrapper clear">
-      {cartOpened && <Drawer onClose={() => setCartOpened(false)}/>}
+      {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)}/>}
       <Header onClickCart={() => setCartOpened(true)}/>
       <div className="content p-40">
         <div className="d-flex align-center mb-40 justify-between">
@@ -33,13 +38,13 @@ function App() {
         </div>
 
         <div className="d-flex flex-wrap">
-          {items.map((obj) => (
+          {items.map((item) => (
             <Card 
-            imageUrl={obj.imageUrl} 
-            title={obj.title} 
-            price={obj.price} 
+            imageUrl={item.imageUrl} 
+            title={item.title} 
+            price={item.price} 
             onFavorite={() => console.log('add fav')}
-            onPlus={() => console.log('add cart')}
+            onPlus={(obj) => onAddToCart(obj)}
             />
           ))}
         </div>
