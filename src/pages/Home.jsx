@@ -25,11 +25,10 @@ function Home( {items, searchValue, setSearchValue, onChangeSearchInput, onAddTo
           .map((item, index) => (
             <Card
             key={index} 
-            imageUrl={item.imageUrl} 
-            title={item.title} 
-            price={item.price} 
+            
             onFavorite={(obj) => onAddToFavorite(obj)}
             onPlus={(obj) => onAddToCart(obj)}
+            {...item}
             />
           ))}
         </div>

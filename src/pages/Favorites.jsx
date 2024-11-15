@@ -1,6 +1,6 @@
 import Card from "../components/Card"
 
-function Favorites({ items}) {
+function Favorites({ items, onAddToFavorite}) {
   return (
     <div className="content p-40">
         <div className="d-flex align-center mb-40 justify-between">
@@ -13,10 +13,10 @@ function Favorites({ items}) {
             .map((item, index) => (
               <Card
                 key={index} 
-                imageUrl={item.imageUrl} 
-                title={item.title} 
-                price={item.price} 
+                
                 favorited={true}
+                onFavorite={onAddToFavorite}
+                {...item}
               />
             ))}
           </div>
