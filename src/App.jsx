@@ -14,26 +14,37 @@ function App() {
   const [favorites, setFavorites] = React.useState([]);
 
 
+
   React.useEffect(() => {
-    axios.get('https://671cd0c509103098807b47bc.mockapi.io/items').then(res => {
-      setItems(res.data);        
-    });
-    axios.get('https://671cd0c509103098807b47bc.mockapi.io/cart').then(res => {
-      setCartItems(res.data);        
-    });
-    axios.get('https://672f50b3229a881691f28bc1.mockapi.io/favorite').then(res => {
-      setFavorites(res.data);        
-    });
+    async function fetchData() {
+      const cartResponse = await axios.get('https://671cd0c509103098807b47bc.mockapi.io/cart');
+      const favoritesResponse = await axios.get('https://672f50b3229a881691f28bc1.mockapi.io/favorite');
+      const itemsResponse = await axios.get('https://671cd0c509103098807b47bc.mockapi.io/items');
+      
+      setCartItems(cartResponse.data);
+      setFavorites(favoritesResponse.data);  
+      setItems(itemsResponse.data);
+    }
+
+    fetchData();
   }, []);
 
   const onAddToCart = (obj) => {
-    axios.post('https://671cd0c509103098807b47bc.mockapi.io/cart', obj);        
-    setCartItems(prev => [...prev, obj]);
+    const itemIndex = cartItems.findIndex((item) => Number(item.itemId) === Number(obj.itemId)) 
+    if ( itemIndex >= 0 ) {
+      axios.delete(`https://671cd0c509103098807b47bc.mockapi.io/cart/${itemIndex+1}`);
+      setCartItems(prev => prev.filter(item => Number(item.itemId) != Number(obj.itemId)));
+    } else {   
+      axios.post('https://671cd0c509103098807b47bc.mockapi.io/cart', obj);
+      setCartItems(prev => [...prev, obj]);
+    }
+    
   };
 
   const onRemoveItem = (id) => {
     axios.delete(`https://671cd0c509103098807b47bc.mockapi.io/cart/${id}`);        
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    const currentItem = cartItems[id-1]
+    setCartItems((prev) => prev.filter((item) => item.itemId !== currentItem.itemId));
   };
 
   const onAddToFavorite = async (obj) => {
@@ -67,19 +78,17 @@ function App() {
         <Route path="/" element={
           <Home 
             items={items} 
+            cartItems={cartItems}
             searchValue={searchValue} 
             setSearchValue={setSearchValue}
             onChangeSearchInput={onChangeSearchInput}
             onAddToFavorite={onAddToFavorite}
             onAddToCart={onAddToCart}
-        />
-        }
-        exact
-        />
+        />}
+        exact/>
         
         <Route path="/favorites" element={<Favorites items={favorites} onAddToFavorite={onAddToFavorite} />}/>
       </Routes>
-
     </div>
   );
 }
